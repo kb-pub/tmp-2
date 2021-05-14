@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="server.domain.FilmServiceFactoryTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-05-14T15:18:15" hostname="kb-Lenovo-ideapad-330-17IKB" time="0.003">
+  <properties/>
+  <testcase name="getInstance()" classname="server.domain.FilmServiceFactoryTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
