@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 public class Dispatcher {
     private final static Path PROJECT_ROOT = Path.of(
-            "/home/kb/projs/java/heap/Lections/LectionsNettyFilmsServer/build/classes/java/main"
+            "/home/kb/projs/java/univer/tmp2/LectionsNettyFilmsServer/build/classes/java/main"
     );
 
     private final Map<Class<?>, Object> controllers = new HashMap<>();

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="api.QueryStringDecoderTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-05-14T15:18:14" hostname="kb-Lenovo-ideapad-330-17IKB" time="0.193">
-  <properties/>
-  <testcase name="test()" classname="api.QueryStringDecoderTest" time="0.193"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

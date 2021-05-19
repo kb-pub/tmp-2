@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="server.db.PGDataSourceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-05-14T15:18:15" hostname="kb-Lenovo-ideapad-330-17IKB" time="0.472">
-  <properties/>
-  <testcase name="getConnection()" classname="server.db.PGDataSourceTest" time="0.472"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -25,4 +25,9 @@ public class Request {
     public Map<String, List<String>> getOptions() {
         return options;
     }
+
+    public long getSingleLongOption(String name, Long defaultValue) {
+        var list = options.get(name);
+        return list == null ? defaultValue : Long.parseLong(list.get(0));
+    }
 }

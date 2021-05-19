@@ -15,4 +15,10 @@ public interface FilmService {
     Film save(Film film);
 
     Collection<Film> findFlatAllLikeTitle(String titlePattern);
+
+    Collection<Film> findFlatPageAllOrderByTitle(long offset, long limit);
+
+    Collection<Film> findPageAllOrderByTitle(long offset, long limit);
+
+    long getFilmCount();
 }

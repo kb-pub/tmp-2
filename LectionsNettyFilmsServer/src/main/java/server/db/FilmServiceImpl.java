@@ -1,6 +1,7 @@
 package server.db;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import server.domain.Film;
 
 import javax.sql.DataSource;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Optional;
 
+@Slf4j
 public class FilmServiceImpl implements FilmService {
     public static final int SERIALIZATION_ANOMALY_ATTEMPTS = 5;
     public static final int SERIALIZATION_ANOMALY_ERROR_CODE = 40001;
@@ -47,33 +49,59 @@ public class FilmServiceImpl implements FilmService {
     @SneakyThrows
     public Film save(Film film) {
         try (var conn = src.getConnection()) {
-            var attempts = SERIALIZATION_ANOMALY_ATTEMPTS;
-            var idOrigin = film.getId();
-            while (attempts-- > 0) {
-                film.setId(idOrigin);
-                conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
-                conn.setAutoCommit(false);
-                try {
-                    film = filmRepository.save(conn, film);
-                    conn.commit();
-                    return film;
-                } catch (SQLException e) {
-                    System.out.println("error " + e);
-                    conn.rollback();
-                    if (e.getErrorCode() != SERIALIZATION_ANOMALY_ERROR_CODE) {
-                        throw e;
-                    }
-                }
-            }
-            throw new SQLException("too many transaction serialization errors");
+            conn.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            conn.setAutoCommit(false);
+            return trySaveNTimes(conn, film);
         }
+    }
+
+    @SneakyThrows
+    private Film trySaveNTimes(Connection conn, Film film) {
+        var attempts = SERIALIZATION_ANOMALY_ATTEMPTS;
+        while (attempts-- > 0) {
+            try {
+                film = filmRepository.save(conn, film);
+                conn.commit();
+                return film;
+            } catch (SQLException e) {
+                log.error("error " + e);
+                conn.rollback();
+                if (e.getErrorCode() != SERIALIZATION_ANOMALY_ERROR_CODE)
+                    throw e;
+            }
+        }
+        throw new SQLException("too many transaction serialization errors");
     }
 
     @Override
     @SneakyThrows
     public Collection<Film> findFlatAllLikeTitle(String titlePattern) {
         try (var conn = src.getConnection()) {
-            return filmRepository.findAllLikeTitle(conn, titlePattern);
+            return filmRepository.findFlatAllLikeTitle(conn, titlePattern);
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public Collection<Film> findFlatPageAllOrderByTitle(long offset, long limit) {
+        try (var conn = src.getConnection()) {
+            return filmRepository.findFlatPageAllOrderByTitle(conn, offset, limit);
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public Collection<Film> findPageAllOrderByTitle(long offset, long limit) {
+        try (var conn = src.getConnection()) {
+            return filmRepository.findPageAllOrderByTitle(conn, offset, limit);
+        }
+    }
+
+    @Override
+    @SneakyThrows
+    public long getFilmCount() {
+        try (var conn = src.getConnection()) {
+            return filmRepository.getFilmCount(conn);
         }
     }
 }

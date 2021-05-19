@@ -8,6 +8,8 @@ import server.domain.Film;
 import server.db.FilmServiceFactory;
 import server.net.exception.NetException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @HttpController
@@ -15,8 +17,22 @@ public class FilmController {
     @UrlPath("/film/search")
     public Model find(Request request) {
         var model = new Model("film_search");
+        var filmService = FilmServiceFactory.getInstance();
+
         model.getVariables().put("test", "some cool variable");
-        model.getVariables().put("films", FilmServiceFactory.getInstance().findFlatAll());
+
+        var offset = request.getSingleLongOption("offset", 0L);
+        var limit = request.getSingleLongOption("limit", 20L);
+        var filmCount = filmService.getFilmCount();
+
+        var pages = new ArrayList<Page>();
+        for (long pageOffset = 0, pageNum = 1; pageOffset < filmCount; pageOffset += limit, pageNum++) {
+            pages.add(new Page(pageNum, pageOffset, limit));
+        }
+        model.getVariables().put("pages", pages);
+
+        model.getVariables().put("films",
+                filmService.findFlatPageAllOrderByTitle(offset, limit));
         return model;
     }
 

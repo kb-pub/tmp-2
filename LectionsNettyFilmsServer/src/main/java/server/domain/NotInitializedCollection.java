@@ -1,4 +1,4 @@
-package server.db;
+package server.domain;
 
 import lombok.EqualsAndHashCode;
 
@@ -11,9 +11,10 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @EqualsAndHashCode
-public class NotLoadedCollection<T> implements Collection<T> {
+public class NotInitializedCollection<T> implements Collection<T> {
+
     private RuntimeException t() {
-        return new RuntimeException("trying to use not loaded collection");
+        return new RuntimeException("trying to use not initialized collection");
     }
 
     @Override
