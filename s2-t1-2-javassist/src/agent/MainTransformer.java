@@ -35,6 +35,7 @@ public class MainTransformer implements ClassFileTransformer {
                         }
                         """, clazz);
                 clazz.addMethod(newMethod);
+
                 clazz.getDeclaredMethod("main").insertAfter("newMethod();");
 
                 return clazz.toBytecode();
