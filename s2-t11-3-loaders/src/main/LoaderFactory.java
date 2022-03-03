@@ -8,11 +8,6 @@ import java.nio.file.Path;
 public class LoaderFactory implements LoaderFactoryMBean {
     private ClassLoader loader;
 
-    @Override
-    public String giveMeString(String value) {
-        return "'" + value + "' was received!";
-    }
-
     public LoaderFactory(String dir) throws Exception {
         loader = newLoader(dir);
     }
@@ -24,7 +19,7 @@ public class LoaderFactory implements LoaderFactoryMBean {
     private ClassLoader newLoader(String dir) throws Exception {
         var path = Path.of(dir);
         if (!Files.isDirectory(path))
-            throw new RuntimeException();
+            throw new RuntimeException("incorrect directory path");
         return new URLClassLoader(new URL[] { path.toUri().toURL() });
     }
 
