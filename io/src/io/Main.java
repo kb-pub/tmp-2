@@ -7,6 +7,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.Key;
@@ -148,8 +149,7 @@ public class Main {
         try (var dos = new DataOutputStream(
                 zos = new ZipOutputStream(
                         new BufferedOutputStream(
-                                Files.newOutputStream(path, CREATE, WRITE)
-                        )))) {
+                                Files.newOutputStream(path, CREATE, WRITE))))) {
             zos.putNextEntry(new ZipEntry("doubles.bin"));
             for (var d : data)
                 dos.writeDouble(d);
@@ -164,8 +164,7 @@ public class Main {
         try (var dis = new DataInputStream(
                 zis = new ZipInputStream(
                         new BufferedInputStream(
-                                Files.newInputStream(path, READ)
-                        )))) {
+                                Files.newInputStream(path, READ))))) {
             zis.getNextEntry();
             for (int i = 0; i < data.length; i++) {
                 data[i] = dis.readDouble();
@@ -189,7 +188,7 @@ public class Main {
         var str = "Hello!";
         var path = Path.of("/home/kb/test/io/testfile.txt");
         try (var out = Files.newOutputStream(path, CREATE, WRITE)) {
-            for (byte b : str.getBytes())
+            for (byte b : str.getBytes(StandardCharsets.UTF_8))
                 out.write(b);
 //            out.write(str.getBytes());
         }
@@ -200,7 +199,8 @@ public class Main {
             while ((b = in.read()) >= 0) {
                 array[cnt++] = (byte) b;
             }
+//            in.read(array);
         }
-        System.out.println(new String(array));
+        System.out.println(new String(array, StandardCharsets.UTF_8));
     }
 }

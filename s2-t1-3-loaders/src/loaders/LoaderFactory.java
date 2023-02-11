@@ -1,4 +1,4 @@
-package main;
+package loaders;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -19,7 +19,8 @@ public class LoaderFactory implements LoaderFactoryMBean {
     private ClassLoader newLoader(String dir) throws Exception {
         var path = Path.of(dir);
         if (!Files.isDirectory(path))
-            throw new RuntimeException("incorrect directory path");
+            throw new RuntimeException("loader creation failed: incorrect directory path '" + path + "'");
+        System.out.println("info: class loader url=" + path.toUri().toURL());
         return new URLClassLoader(new URL[] { path.toUri().toURL() });
     }
 
