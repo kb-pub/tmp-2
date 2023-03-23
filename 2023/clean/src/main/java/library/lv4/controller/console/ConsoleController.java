@@ -43,9 +43,9 @@ public class ConsoleController implements Controller {
         try {
             io.print("Title: ");
             var title = io.read();
-            io.print("Author: ");
-            var author = io.read();
-            addNewBookUseCase.add(new BookDto(title, author));
+            io.print("Year: ");
+            var year = io.readInt();
+            addNewBookUseCase.add(new BookDto(title, year));
             io.println("all done!");
         }
         catch (AppException e) {
@@ -54,6 +54,6 @@ public class ConsoleController implements Controller {
     }
 
     private String book2String(BookDto b) {
-        return String.format("\"%s\", author %s", b.getTitle(), b.getAuthor());
+        return String.format("\"%s\", year %s", b.getTitle(), b.getYear());
     }
 }

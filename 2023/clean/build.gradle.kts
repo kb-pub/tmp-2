@@ -18,6 +18,7 @@ dependencies {
     implementation("org.slf4j:slf4j-simple:2.0.6")
     implementation("org.simplejavamail:simple-java-mail:7.9.1")
     implementation("org.telegram:telegrambots:6.5.0")
+    implementation("org.postgresql:postgresql:42.6.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")

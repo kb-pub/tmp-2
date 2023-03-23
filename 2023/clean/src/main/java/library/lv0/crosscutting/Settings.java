@@ -1,7 +1,11 @@
 package library.lv0.crosscutting;
 
-public class Settings {
-    public static final String EMAIL_SMTP_ADDRESS = "smtp.yandex.ru";
-    public static final int EMAIL_SMTP_PORT = 465;
-    public static final String EMAIL_ADDRESS = "busygin-k@kiszi.ru";
+public interface Settings {
+    String EMAIL_SMTP_ADDRESS = "smtp.yandex.ru";
+    int EMAIL_SMTP_PORT = 465;
+    String EMAIL_ADDRESS = "busygin-k@kiszi.ru";
+
+    String PG_CONN_STRING = "jdbc:postgresql://localhost/library";
+    String PG_USERNAME = "user";
+    String PG_PASSWORD = "secret";
 }

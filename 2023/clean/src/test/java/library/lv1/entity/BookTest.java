@@ -18,7 +18,7 @@ class BookTest {
         // when
         // then
         ids.forEach(id -> assertThatException()
-                .isThrownBy(() -> new Book(id, "test", "test")));
+                .isThrownBy(() -> new Book(id, "test", 2000)));
     }
 
     @Test
@@ -29,14 +29,14 @@ class BookTest {
         // when
         // then
         ids.forEach(id -> assertThatNoException()
-                .isThrownBy(() -> new Book(id, "test", "test")));
+                .isThrownBy(() -> new Book(id, "test", 2000)));
     }
 
     @Test
     void getTitle() {
         var title = "test title " + new Random().nextInt();
 
-        var sut = new Book(0, title, "test author");
+        var sut = new Book(0, title, 2000);
 
         assertThat(sut.getTitle()).isEqualTo(title);
     }

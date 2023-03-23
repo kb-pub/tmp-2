@@ -29,7 +29,7 @@ class AddNewBookUseCaseTest {
 
     @Test
     void givenCorrectBook_whenAdd_thenSaveAndEmail() {
-        var dto = new BookDto("t1", "a1");
+        var dto = new BookDto("t1", 1234);
         var book = BookMapper.fromDtoToNewBook(dto);
         var insertedBook = book.toBuilder().id(1).build();
         when(bookRepository.save(book)).thenReturn(insertedBook);
@@ -42,7 +42,7 @@ class AddNewBookUseCaseTest {
 
     @Test
     void givenIncorrectBook_whenAdd_thenThrowsAndNoEmail() {
-        var dto = new BookDto("t1", "a1");
+        var dto = new BookDto("t1", 1234);
         var book = BookMapper.fromDtoToNewBook(dto);
         when(bookRepository.save(book)).thenThrow(new RepositoryAppException("test"));
 

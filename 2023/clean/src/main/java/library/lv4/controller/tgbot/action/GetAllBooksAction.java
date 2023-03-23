@@ -21,9 +21,21 @@ public class GetAllBooksAction implements Action {
             books.stream()
                     .map(b -> new SendMessage(
                             charId,
-                            String.format("'%s', %s", b.getTitle(), b.getAuthor())))
+                            String.format("'%s', %s", b.getTitle(), b.getYear())))
                     .forEach(messages::add);
         }
         return new Answer(messages, Action.DEFAULT, false);
+    }
+
+    public static class Factory {
+        private static GetAllBooksUseCase useCase;
+
+        public static void init(GetAllBooksUseCase useCase) {
+            Factory.useCase = useCase;
+        }
+
+        public static GetAllBooksAction get() {
+            return new GetAllBooksAction(useCase);
+        }
     }
 }

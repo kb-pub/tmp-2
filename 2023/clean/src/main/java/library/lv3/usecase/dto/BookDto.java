@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class BookDto {
     private final String title;
-    private final String author;
+    private final int year;
 }

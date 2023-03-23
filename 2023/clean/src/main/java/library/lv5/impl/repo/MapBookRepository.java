@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class MapBookRepository implements BookRepository {
     private final Map<Long, Book> map = new LinkedHashMap<>() {{
-        put(1L, new Book(1, "title 1", "author 1"));
-        put(2L, new Book(2, "title 2", "author 2"));
-        put(3L, new Book(3, "title 3", "author 3"));
+        put(1L, new Book(1, "title 1", 2000));
+        put(2L, new Book(2, "title 2", 2001));
+        put(3L, new Book(3, "title 3", 2002));
     }};
 
     @Override

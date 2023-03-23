@@ -45,7 +45,7 @@ class GetAllBooksUseCaseTest {
 
     private List<Book> getBookList(int count) {
         return IntStream.range(1, count + 1)
-                .mapToObj(id -> new Book(id, "title " + id, "author " + id))
+                .mapToObj(id -> new Book(id, "title " + id, 2000 + id))
                 .toList();
     }
 

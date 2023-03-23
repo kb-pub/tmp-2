@@ -1,5 +1,6 @@
 package library.lv5.impl.infrastructure;
 
+import library.AppException;
 import library.lv4.controller.console.IO;
 
 import java.io.PrintStream;
@@ -11,8 +12,17 @@ public class ConsoleIO implements IO {
 
     @Override
     public String read() {
-//        return System.console().readLine();
         return in.nextLine();
+    }
+
+    @Override
+    public int readInt() {
+        try {
+            return Integer.parseInt(read());
+        }
+        catch (NumberFormatException e) {
+            throw new AppException("input must be integer number");
+        }
     }
 
     @Override
