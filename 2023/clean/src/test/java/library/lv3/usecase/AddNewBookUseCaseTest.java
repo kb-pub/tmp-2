@@ -32,11 +32,11 @@ class AddNewBookUseCaseTest {
         var dto = new BookDto("t1", 1234);
         var book = BookMapper.fromDtoToNewBook(dto);
         var insertedBook = book.toBuilder().id(1).build();
-        when(bookRepository.save(book)).thenReturn(insertedBook);
+        when(bookRepository.save(book, null)).thenReturn(insertedBook);
 
-        sut.add(dto);
+        sut.add(dto, null);
 
-        verify(bookRepository).save(book);
+        verify(bookRepository).save(book, null);
         verify(emailService).send(any());
     }
 
@@ -44,10 +44,10 @@ class AddNewBookUseCaseTest {
     void givenIncorrectBook_whenAdd_thenThrowsAndNoEmail() {
         var dto = new BookDto("t1", 1234);
         var book = BookMapper.fromDtoToNewBook(dto);
-        when(bookRepository.save(book)).thenThrow(new RepositoryAppException("test"));
+        when(bookRepository.save(book, null)).thenThrow(new RepositoryAppException("test"));
 
         assertThatExceptionOfType(RepositoryAppException.class)
-                .isThrownBy(() -> sut.add(dto));
+                .isThrownBy(() -> sut.add(dto, null));
 
         verify(emailService, never()).send(any());
     }

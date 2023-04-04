@@ -4,7 +4,7 @@ import library.lv1.entity.Book;
 
 import java.util.List;
 
-public interface BookRepository {
+public interface BookRepository extends BaseRepository {
     List<Book> findAll();
 
     /**
@@ -12,5 +12,5 @@ public interface BookRepository {
      * @param book
      * @return !!!!!!!!
      */
-    Book save(Book book);
+    Book save(Book book, List<Long> authorIds);
 }

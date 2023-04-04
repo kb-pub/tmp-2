@@ -2,7 +2,6 @@ package library.lv1.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @Builder(toBuilder = true)

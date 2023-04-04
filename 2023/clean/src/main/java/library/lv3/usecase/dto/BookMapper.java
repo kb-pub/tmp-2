@@ -4,7 +4,7 @@ import library.lv1.entity.Book;
 
 public class BookMapper {
     public static BookDto toDto(Book book) {
-        return new BookDto(book.getTitle(), book.getYear());
+        return new BookDto(book.getId(), book.getTitle(), book.getYear());
     }
 
     public static Book fromDtoToNewBook(BookDto dto) {

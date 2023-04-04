@@ -1,4 +1,4 @@
-package library.lv5.impl.repo;
+package library.lv5.impl.repo.map;
 
 import library.lv1.entity.Book;
 import library.lv2.spi.repo.BookRepository;
@@ -21,7 +21,7 @@ public class MapBookRepository implements BookRepository {
     }
 
     @Override
-    public Book save(Book book) {
+    public Book save(Book book, List<Long> authorIds) {
         return book.getId() == 0 ? insert(book) : update(book);
     }
 
@@ -38,5 +38,20 @@ public class MapBookRepository implements BookRepository {
         }
         map.put(book.getId(), book);
         return book;
+    }
+
+    @Override
+    public void beginTransaction() {
+
+    }
+
+    @Override
+    public void commitTransaction() {
+
+    }
+
+    @Override
+    public void rollbackTransaction() {
+
     }
 }

@@ -3,7 +3,6 @@ package library.lv3.usecase;
 import library.lv1.entity.Book;
 import library.lv2.spi.repo.BookRepository;
 import library.lv3.usecase.dto.BookMapper;
-import library.lv5.impl.repo.MapBookRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
