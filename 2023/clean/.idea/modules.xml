@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2023.clean.main.iml" filepath="$PROJECT_DIR$/.idea/modules/2023.clean.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/clean.main.iml" filepath="$PROJECT_DIR$/.idea/modules/clean.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.example.clean.main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.example.clean.main.iml" />
     </modules>
