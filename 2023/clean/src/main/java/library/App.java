@@ -1,5 +1,7 @@
 package library;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import library.lv3.usecase.AddNewBookUseCase;
 import library.lv3.usecase.GetAllAuthorsUseCase;
 import library.lv3.usecase.GetAllBooksUseCase;
@@ -7,20 +9,33 @@ import library.lv4.controller.Controller;
 import library.lv4.controller.console.AuthorController;
 import library.lv4.controller.console.BookController;
 import library.lv4.controller.console.ConsoleController;
+import library.lv4.controller.mapper.Mapper;
 import library.lv5.impl.infrastructure.ConsoleIO;
 import library.lv5.impl.repo.pg.PgAuthorRepository;
 import library.lv5.impl.repo.pg.PgBookRepository;
 import library.lv5.impl.repo.pg.PgDataSource;
 import library.lv5.impl.service.StubEmailService;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 
 @Slf4j
 public class App {
-    public static void main(String[] args) {
-        build().start();
-    }
+    public static final Mapper mapper;
+    public static final GetAllBooksUseCase getAllBooksUseCase;
+    public static final AddNewBookUseCase addNewBookUseCase;
+    public static final GetAllAuthorsUseCase getAllAuthorsUseCase;
+    public static final Controller controller;
 
-    private static Controller build() {
+    static {
+        mapper = new Mapper();
+
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new AppException(e);
+        }
+
         var dataSource = new PgDataSource();
 
 //        var bookRepo = new MapBookRepository();
@@ -32,20 +47,23 @@ public class App {
         var emailService = new StubEmailService(io);
 //        var emailService = new YandexMailService();
 
-        var getAllBooksUseCase = new GetAllBooksUseCase(bookRepo);
-        var addNewBookUseCase = new AddNewBookUseCase(
+        getAllBooksUseCase = new GetAllBooksUseCase(bookRepo);
+        addNewBookUseCase = new AddNewBookUseCase(
                 bookRepo,
                 emailService);
-        var getAllAuthorsUseCase = new GetAllAuthorsUseCase(authorRepo);
+        getAllAuthorsUseCase = new GetAllAuthorsUseCase(authorRepo);
 
-        var bookController = new BookController(io, getAllBooksUseCase, addNewBookUseCase);
+        val bookController = new BookController(io, getAllBooksUseCase, addNewBookUseCase);
         var authorController = new AuthorController(io, getAllAuthorsUseCase);
 
-        var controller = new ConsoleController(
+        controller = new ConsoleController(
                 io, bookController, authorController);
 //        GetAllBooksAction.Factory.init(getAllBooksUseCase);
 //        var controller = new TelegramBotController();
-
-        return controller;
     }
+
+    public static void main(String[] args) {
+        controller.start();
+    }
+
 }
