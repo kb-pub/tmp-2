@@ -23,9 +23,9 @@ public class PgBaseRepository implements BaseRepository {
 
     @Override
     public void commitTransaction() {
-        try {
-            dataSource.getConnection().commit();
-            dataSource.getConnection().setAutoCommit(true);
+        try (var conn = dataSource.getConnection()) {
+            conn.commit();
+            conn.setAutoCommit(true);
         }
         catch (SQLException e) {
             throw new RepositoryAppException(e.getMessage());
@@ -34,9 +34,9 @@ public class PgBaseRepository implements BaseRepository {
 
     @Override
     public void rollbackTransaction() {
-        try {
-            dataSource.getConnection().rollback();
-            dataSource.getConnection().setAutoCommit(true);
+        try (var conn = dataSource.getConnection()) {
+            conn.rollback();
+            conn.setAutoCommit(true);
         }
         catch (SQLException e) {
             throw new RepositoryAppException(e.getMessage());

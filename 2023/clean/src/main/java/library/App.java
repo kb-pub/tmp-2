@@ -18,6 +18,7 @@ import library.lv5.impl.service.StubEmailService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.logging.log4j.LogManager;
 
 @Slf4j
 public class App {
@@ -28,6 +29,8 @@ public class App {
     public static final Controller controller;
 
     static {
+        LogManager.getLogger(App.class).info("init started...");
+
         mapper = new Mapper();
 
         try {
@@ -60,6 +63,8 @@ public class App {
                 io, bookController, authorController);
 //        GetAllBooksAction.Factory.init(getAllBooksUseCase);
 //        var controller = new TelegramBotController();
+
+        LogManager.getLogger(App.class).info("init done!");
     }
 
     public static void main(String[] args) {
