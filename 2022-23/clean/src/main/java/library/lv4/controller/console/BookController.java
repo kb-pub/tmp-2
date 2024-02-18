@@ -4,6 +4,7 @@ import library.AppException;
 import library.lv3.usecase.AddNewBookUseCase;
 import library.lv3.usecase.GetAllBooksUseCase;
 import library.lv3.usecase.dto.BookDto;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
