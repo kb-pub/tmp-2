@@ -3,9 +3,12 @@ package app;
 import app.transport.StringLineTransport;
 import app.transport.StubTransport;
 import app.transport.Transport;
+import app.transport.echo.EchoRequest;
+import app.transport.echo.SerializedTransport;
 
 public class Client {
     private final IO io = new IO();
+//    private final Transport transport = new SerializedTransport();
     private final Transport transport = new StringLineTransport();
 
     public static void main(String[] args) {
@@ -34,7 +37,7 @@ public class Client {
         var text = io.readln();
         try {
             transport.connect();
-            transport.send(text);
+            transport.send(new EchoRequest(text));
             var response = transport.receive();
             io.println("server response: " + response);
         } finally {

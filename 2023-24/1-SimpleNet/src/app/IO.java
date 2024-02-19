@@ -20,4 +20,16 @@ public class IO {
         writer.println(o);
         writer.flush();
     }
+
+    public void log(Object o) {
+        if (Settings.DEBUG_ON) {
+            println("DEBUG " + o);
+        }
+    }
+
+    public void log(String fmt, Object... o) {
+        if (Settings.DEBUG_ON) {
+            log(fmt.formatted(o));
+        }
+    }
 }

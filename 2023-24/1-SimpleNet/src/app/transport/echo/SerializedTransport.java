@@ -1,29 +1,30 @@
-package app.transport;
+package app.transport.echo;
 
-import app.IO;
 import app.Settings;
-import app.transport.echo.EchoRequest;
-import app.transport.echo.EchoResponse;
+import app.transport.Message;
+import app.transport.Transport;
+import app.transport.TransportException;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class StringLineTransport implements Transport {
+public class SerializedTransport implements Transport {
     private Socket socket;
-    private PrintWriter writer;
-    private Scanner scanner;
-    private final IO io = new IO();
+    private ObjectOutputStream writer;
+    private ObjectInputStream reader;
 
-    public StringLineTransport() {
+    public SerializedTransport() {
     }
 
-    public StringLineTransport(Socket socket) {
+    public SerializedTransport(Socket socket) {
         try {
             this.socket = socket;
-            writer = new PrintWriter(socket.getOutputStream(), false, StandardCharsets.UTF_8);
-            scanner = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
+            writer = new ObjectOutputStream(socket.getOutputStream());
+            reader = new ObjectInputStream(socket.getInputStream());
         } catch (Exception e) {
             disconnect();
             throw new TransportException(e);
@@ -35,8 +36,8 @@ public class StringLineTransport implements Transport {
         try {
             if (socket == null || socket.isClosed()) {
                 socket = new Socket(Settings.HOST, Settings.PORT);
-                writer = new PrintWriter(socket.getOutputStream(), false, StandardCharsets.UTF_8);
-                scanner = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
+                writer = new ObjectOutputStream(socket.getOutputStream());
+                reader = new ObjectInputStream(socket.getInputStream());
             }
         } catch (Exception e) {
             disconnect();
@@ -56,12 +57,10 @@ public class StringLineTransport implements Transport {
     }
 
     @Override
-    public void send(Message o) throws TransportException {
+    public void send(Message m) throws TransportException {
         checkIsConnected();
         try {
-            var text = o.getClass().getSimpleName() + "|" + o;
-            io.log("sending '%s'", text);
-            writer.println(text);
+            writer.writeObject(m);
             writer.flush();
         } catch (Exception e) {
             disconnect();
@@ -73,21 +72,10 @@ public class StringLineTransport implements Transport {
     public Message receive() throws TransportException {
         checkIsConnected();
         try {
-            var parts = scanner.nextLine().split("\\|");
-            return responseFactory(parts[0], parts[1]);
+            return (Message) reader.readObject();
         } catch (Exception e) {
             disconnect();
             throw new TransportException(e);
-        }
-    }
-
-    private Message responseFactory(String id, String text) {
-        if (id.equals(EchoRequest.class.getSimpleName())) {
-            return new EchoRequest(text);
-        } else if (id.equals(EchoResponse.class.getSimpleName())) {
-            return new EchoResponse(text);
-        } else {
-            throw new TransportException("unknown message id");
         }
     }
 
