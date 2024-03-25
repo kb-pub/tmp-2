@@ -12,7 +12,7 @@ import java.util.List;
 public class GetAllBooksInteractor {
     private final BookRepository bookRepository;
     public Response get() {
-        var books = bookRepository.findAllFlat().stream()
+        var books = bookRepository.findAll().stream()
                 .map(BookMapper::toDto)
                 .toList();
         return new Response(books);

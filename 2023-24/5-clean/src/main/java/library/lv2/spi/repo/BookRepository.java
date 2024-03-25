@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface BookRepository extends BaseRepository {
     List<Book> findAll();
+    List<Book> findAllFlat();
 
     /**
      *

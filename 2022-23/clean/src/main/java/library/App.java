@@ -3,7 +3,6 @@ package library;
 import library.lv3.usecase.AddNewBookInteractor;
 import library.lv3.usecase.GetAllAuthorsInteractor;
 import library.lv3.usecase.GetAllBooksInteractor;
-import library.lv3.usecase.GetAllBooksWithAuthorsInteractor;
 import library.lv4.controller.Controller;
 import library.lv4.controller.console.AuthorController;
 import library.lv4.controller.console.BookController;
@@ -22,7 +21,6 @@ import org.apache.logging.log4j.LogManager;
 public class App {
     public static final Mapper mapper;
     public static final GetAllBooksInteractor GET_ALL_BOOKS_INTERACTOR;
-    public static final GetAllBooksWithAuthorsInteractor GET_ALL_BOOKS_WITH_AUTHORS_INTERACTOR;
     public static final AddNewBookInteractor ADD_NEW_BOOK_INTERACTOR;
     public static final GetAllAuthorsInteractor GET_ALL_AUTHORS_INTERACTOR;
     public static final Controller controller;
@@ -50,17 +48,12 @@ public class App {
 //        var emailService = new YandexMailService();
 
         GET_ALL_BOOKS_INTERACTOR = new GetAllBooksInteractor(bookRepo);
-        GET_ALL_BOOKS_WITH_AUTHORS_INTERACTOR = new GetAllBooksWithAuthorsInteractor(bookRepo);
         ADD_NEW_BOOK_INTERACTOR = new AddNewBookInteractor(
                 bookRepo,
                 emailService);
         GET_ALL_AUTHORS_INTERACTOR = new GetAllAuthorsInteractor(authorRepo);
 
-        val bookController = new BookController(
-                io,
-                GET_ALL_BOOKS_INTERACTOR,
-                GET_ALL_BOOKS_WITH_AUTHORS_INTERACTOR,
-                ADD_NEW_BOOK_INTERACTOR);
+        val bookController = new BookController(io, GET_ALL_BOOKS_INTERACTOR, ADD_NEW_BOOK_INTERACTOR);
         var authorController = new AuthorController(io, GET_ALL_AUTHORS_INTERACTOR);
 
         controller = new ConsoleController(

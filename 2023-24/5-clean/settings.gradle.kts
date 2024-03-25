@@ -1,2 +1,2 @@
-rootProject.name = "clean"
+rootProject.name = "5-clean"
 

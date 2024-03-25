@@ -17,7 +17,6 @@ public class ConsoleController implements Controller {
                 command = io.read().strip().toLowerCase();
                 switch (command) {
                     case "book ls" -> bookController.showAllBooks();
-                    case "book lsa" -> bookController.showAllBooksWithAuthors();
                     case "book add" -> bookController.addNewBook();
                     case "author ls" -> authorController.showAllAuthors();
                     case "exit" -> io.println("bye!");

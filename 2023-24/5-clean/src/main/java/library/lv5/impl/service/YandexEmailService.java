@@ -9,10 +9,10 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 
-public class YandexMailService implements EmailService {
+public class YandexEmailService implements EmailService {
     private final Mailer mailer;
 
-    public YandexMailService() {
+    public YandexEmailService() {
         try {
             mailer = MailerBuilder
                     .withSMTPServer(

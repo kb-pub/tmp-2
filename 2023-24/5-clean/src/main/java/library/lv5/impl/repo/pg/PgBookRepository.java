@@ -1,5 +1,6 @@
 package library.lv5.impl.repo.pg;
 
+import library.lv1.entity.Author;
 import library.lv1.entity.Book;
 import library.lv2.spi.repo.BookRepository;
 import library.lv2.spi.repo.RepositoryAppException;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,55 @@ public class PgBookRepository extends PgBaseRepository implements BookRepository
 
     @Override
     public List<Book> findAll() {
+        try {
+            var conn = dataSource.getConnection();
+            try (var stmt = conn.prepareStatement("""
+                    select
+                         b.id book_id,
+                         b.title book_title,
+                         b.year book_year,
+                         a.id author_id,
+                         a.name author_name
+                    from books b
+                    left join books_authors ba on b.id = ba.book_id
+                    left join authors a on a.id = ba.author_id
+                    order by b.id
+                    """)) {
+                var result = new ArrayList<Book>();
+                long currentBookId = -1;
+                Book currentBook = null;
+                var ctx = new HashMap<Long, Author>();
+                try (var rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        if (rs.getLong("book_id") != currentBookId) {
+                            currentBook = new Book(
+                                    rs.getLong("book_id"),
+                                    rs.getString("book_title"),
+                                    rs.getInt("book_year"),
+                                    new ArrayList<>());
+                            result.add(currentBook);
+                            currentBookId = currentBook.getId();
+                        }
+                        var authorId = rs.getLong("author_id");
+                        if (authorId != 0) {
+                            var author = ctx.get(authorId);
+                            if (author == null) {
+                                author = new Author(authorId, rs.getString("author_name"));
+                                ctx.put(authorId, author);
+                            }
+                            currentBook.getAuthors().add(author);
+                        }
+                    }
+                }
+                return Collections.unmodifiableList(result);
+            }
+        } catch (SQLException e) {
+            throw new RepositoryAppException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Book> findAllFlat() {
         try {
             var conn = dataSource.getConnection();
             try (var stmt = conn.prepareStatement("select * from books")) {
@@ -60,9 +111,9 @@ public class PgBookRepository extends PgBaseRepository implements BookRepository
 
     private long insertBook(Book book, Connection connection) throws SQLException {
         try (var stmt = connection.prepareStatement("""
-                    insert into books (id, title, year)
-                    values (default, ?, ?)
-                    """, Statement.RETURN_GENERATED_KEYS)) {
+                insert into books (id, title, year)
+                values (default, ?, ?)
+                """, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, book.getTitle());
             stmt.setInt(2, book.getYear());
             ResultSet keyRs;
@@ -80,19 +131,18 @@ public class PgBookRepository extends PgBaseRepository implements BookRepository
             updateBook(book, conn);
             updateAuthors(book.getId(), updatedAuthorIds, conn);
             return book;
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RepositoryAppException(e.getMessage());
         }
     }
 
     private void updateBook(Book book, Connection connection) throws SQLException {
         try (var stmt = connection.prepareStatement("""
-                    update books set
-                        title = ?,
-                        year = ?
-                    where id = ?
-                    """)) {
+                update books set
+                    title = ?,
+                    year = ?
+                where id = ?
+                """)) {
             stmt.setString(1, book.getTitle());
             stmt.setInt(2, book.getYear());
             stmt.setLong(3, book.getId());

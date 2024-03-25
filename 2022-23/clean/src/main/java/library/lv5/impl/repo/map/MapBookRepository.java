@@ -10,19 +10,14 @@ import java.util.Map;
 
 public class MapBookRepository implements BookRepository {
     private final Map<Long, Book> map = new LinkedHashMap<>() {{
-        put(1L, new Book(1, "title 1", 2000, null));
-        put(2L, new Book(2, "title 2", 2001, null));
-        put(3L, new Book(3, "title 3", 2002, null));
+        put(1L, new Book(1, "title 1", 2000));
+        put(2L, new Book(2, "title 2", 2001));
+        put(3L, new Book(3, "title 3", 2002));
     }};
 
     @Override
     public List<Book> findAll() {
         return map.values().stream().toList();
-    }
-
-    @Override
-    public List<Book> findAllFlat() {
-        return findAll();
     }
 
     @Override

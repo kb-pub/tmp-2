@@ -3,35 +3,20 @@ package library.lv4.controller.console;
 import library.AppException;
 import library.lv3.usecase.AddNewBookInteractor;
 import library.lv3.usecase.GetAllBooksInteractor;
-import library.lv3.usecase.GetAllBooksWithAuthorsInteractor;
-import library.lv3.usecase.dto.AuthorDto;
 import library.lv3.usecase.dto.BookDto;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class BookController {
     private final IO io;
     private final GetAllBooksInteractor getAllBooksInteractor;
-    private final GetAllBooksWithAuthorsInteractor getAllBooksWithAuthorsInteractor;
     private final AddNewBookInteractor addNewBookInteractor;
 
     public void showAllBooks() {
         var response = getAllBooksInteractor.get();
-        if (response.getBooks().isEmpty()) {
-            io.println("no books found");
-        }
-        else {
-            io.println("books in library:");
-            response.getBooks().forEach(b -> io.println(book2String(b)));
-        }
-    }
-
-    public void showAllBooksWithAuthors() {
-        var response = getAllBooksWithAuthorsInteractor.get();
         if (response.getBooks().isEmpty()) {
             io.println("no books found");
         }
@@ -75,12 +60,6 @@ public class BookController {
     }
 
     private String book2String(BookDto b) {
-        var book =  "(%d)'%s', year %s".formatted(b.getId(), b.getTitle(), b.getYear());
-        if (b.getAuthors() != null) {
-            book = book + b.getAuthors().stream()
-                    .map(AuthorDto::getName)
-                    .collect(Collectors.joining(", ", " (", ")"));
-        }
-        return book;
+        return "(%d)'%s', year %s".formatted(b.getId(), b.getTitle(), b.getYear());
     }
 }
