@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import library.App;
 import library.AppException;
-import library.lv3.usecase.AddNewBookUseCase;
+import library.lv3.usecase.AddNewBookInteractor;
 import library.lv3.usecase.dto.BookDto;
 import library.lv4.controller.mapper.Mapper;
 import lombok.Data;
@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 
 @WebServlet("/book/add")
 public class AddNewBookServlet extends HttpServlet {
-    private AddNewBookUseCase addNewBookUseCase;
+    private AddNewBookInteractor addNewBookInteractor;
     private Mapper mapper;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        addNewBookUseCase = App.addNewBookUseCase;
+        addNewBookInteractor = App.ADD_NEW_BOOK_INTERACTOR;
         mapper = App.mapper;
     }
 
@@ -33,7 +33,7 @@ public class AddNewBookServlet extends HttpServlet {
         try {
             var msg = req.getReader().lines().collect(Collectors.joining(" "));
             var request = mapper.deserialize(msg, Request.class);
-            addNewBookUseCase.add(request.getBook(), request.getAuthorIds());
+            addNewBookInteractor.add(request.getBook(), request.getAuthorIds());
             resp.setStatus(200);
             resp.setContentType(mapper.getContentType());
             resp.getWriter().println("{}");

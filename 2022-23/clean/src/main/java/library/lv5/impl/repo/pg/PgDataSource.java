@@ -9,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class PgDataSource {
-/*
     private Connection connection = null;
 
     public Connection getConnection() throws SQLException {
@@ -21,7 +20,6 @@ public class PgDataSource {
         }
         return connection;
     }
-*/
 
 /*
     private final ThreadLocal<Connection> threadConnection = new ThreadLocal<>();
@@ -39,21 +37,21 @@ public class PgDataSource {
     }
 */
 
-    private final HikariDataSource ds;
-    public PgDataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(Settings.PG_CONN_STRING);
-        config.setUsername(Settings.PG_USERNAME);
-        config.setPassword(Settings.PG_PASSWORD);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-        ds = new HikariDataSource(config);
-    }
-
-    public Connection getConnection() throws SQLException {
-        return ds.getConnection();
-    }
+//    private final HikariDataSource ds;
+//    public PgDataSource() {
+//        HikariConfig config = new HikariConfig();
+//        config.setJdbcUrl(Settings.PG_CONN_STRING);
+//        config.setUsername(Settings.PG_USERNAME);
+//        config.setPassword(Settings.PG_PASSWORD);
+//        config.addDataSourceProperty("cachePrepStmts", "true");
+//        config.addDataSourceProperty("prepStmtCacheSize", "250");
+//        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+//
+//        ds = new HikariDataSource(config);
+//    }
+//
+//    public Connection getConnection() throws SQLException {
+//        return ds.getConnection();
+//    }
 
 }

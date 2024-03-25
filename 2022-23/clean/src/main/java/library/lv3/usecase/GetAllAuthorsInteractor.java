@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class GetAllAuthorsUseCase {
+public class GetAllAuthorsInteractor {
     private final AuthorRepository authorRepository;
 
     public List<AuthorDto> get() {

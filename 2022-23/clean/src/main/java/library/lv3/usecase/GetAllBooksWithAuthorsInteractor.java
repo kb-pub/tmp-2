@@ -1,6 +1,5 @@
 package library.lv3.usecase;
 
-import library.lv1.entity.Book;
 import library.lv2.spi.repo.BookRepository;
 import library.lv3.usecase.dto.BookDto;
 import library.lv3.usecase.dto.BookMapper;
@@ -10,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class GetAllBooksUseCase {
+public class GetAllBooksWithAuthorsInteractor {
     private final BookRepository bookRepository;
     public Response get() {
         var books = bookRepository.findAll().stream()

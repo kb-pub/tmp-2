@@ -1,6 +1,6 @@
 package library.lv4.controller.tgbot.action;
 
-import library.lv3.usecase.GetAllBooksUseCase;
+import library.lv3.usecase.GetAllBooksInteractor;
 import lombok.RequiredArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 @RequiredArgsConstructor
 public class GetAllBooksAction implements Action {
-    private final GetAllBooksUseCase useCase;
+    private final GetAllBooksInteractor useCase;
     @Override
     public Answer act(String charId, String text) {
         var books = useCase.get().getBooks();
@@ -28,9 +28,9 @@ public class GetAllBooksAction implements Action {
     }
 
     public static class Factory {
-        private static GetAllBooksUseCase useCase;
+        private static GetAllBooksInteractor useCase;
 
-        public static void init(GetAllBooksUseCase useCase) {
+        public static void init(GetAllBooksInteractor useCase) {
             Factory.useCase = useCase;
         }
 

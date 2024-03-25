@@ -1,10 +1,9 @@
 package library;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import library.lv3.usecase.AddNewBookUseCase;
-import library.lv3.usecase.GetAllAuthorsUseCase;
-import library.lv3.usecase.GetAllBooksUseCase;
+import library.lv3.usecase.AddNewBookInteractor;
+import library.lv3.usecase.GetAllAuthorsInteractor;
+import library.lv3.usecase.GetAllBooksInteractor;
+import library.lv3.usecase.GetAllBooksWithAuthorsInteractor;
 import library.lv4.controller.Controller;
 import library.lv4.controller.console.AuthorController;
 import library.lv4.controller.console.BookController;
@@ -15,7 +14,6 @@ import library.lv5.impl.repo.pg.PgAuthorRepository;
 import library.lv5.impl.repo.pg.PgBookRepository;
 import library.lv5.impl.repo.pg.PgDataSource;
 import library.lv5.impl.service.StubEmailService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.logging.log4j.LogManager;
@@ -23,9 +21,10 @@ import org.apache.logging.log4j.LogManager;
 @Slf4j
 public class App {
     public static final Mapper mapper;
-    public static final GetAllBooksUseCase getAllBooksUseCase;
-    public static final AddNewBookUseCase addNewBookUseCase;
-    public static final GetAllAuthorsUseCase getAllAuthorsUseCase;
+    public static final GetAllBooksInteractor GET_ALL_BOOKS_INTERACTOR;
+    public static final GetAllBooksWithAuthorsInteractor GET_ALL_BOOKS_WITH_AUTHORS_INTERACTOR;
+    public static final AddNewBookInteractor ADD_NEW_BOOK_INTERACTOR;
+    public static final GetAllAuthorsInteractor GET_ALL_AUTHORS_INTERACTOR;
     public static final Controller controller;
 
     static {
@@ -50,14 +49,19 @@ public class App {
         var emailService = new StubEmailService(io);
 //        var emailService = new YandexMailService();
 
-        getAllBooksUseCase = new GetAllBooksUseCase(bookRepo);
-        addNewBookUseCase = new AddNewBookUseCase(
+        GET_ALL_BOOKS_INTERACTOR = new GetAllBooksInteractor(bookRepo);
+        GET_ALL_BOOKS_WITH_AUTHORS_INTERACTOR = new GetAllBooksWithAuthorsInteractor(bookRepo);
+        ADD_NEW_BOOK_INTERACTOR = new AddNewBookInteractor(
                 bookRepo,
                 emailService);
-        getAllAuthorsUseCase = new GetAllAuthorsUseCase(authorRepo);
+        GET_ALL_AUTHORS_INTERACTOR = new GetAllAuthorsInteractor(authorRepo);
 
-        val bookController = new BookController(io, getAllBooksUseCase, addNewBookUseCase);
-        var authorController = new AuthorController(io, getAllAuthorsUseCase);
+        val bookController = new BookController(
+                io,
+                GET_ALL_BOOKS_INTERACTOR,
+                GET_ALL_BOOKS_WITH_AUTHORS_INTERACTOR,
+                ADD_NEW_BOOK_INTERACTOR);
+        var authorController = new AuthorController(io, GET_ALL_AUTHORS_INTERACTOR);
 
         controller = new ConsoleController(
                 io, bookController, authorController);

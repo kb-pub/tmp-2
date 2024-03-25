@@ -5,18 +5,15 @@ import library.lv2.spi.repo.RepositoryAppException;
 import library.lv2.spi.service.EmailService;
 import library.lv3.usecase.dto.BookDto;
 import library.lv3.usecase.dto.BookMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class AddNewBookUseCaseTest {
-    AddNewBookUseCase sut;
+class AddNewBookInteractorTest {
+    AddNewBookInteractor sut;
     BookRepository bookRepository;
     EmailService emailService;
 
@@ -24,7 +21,7 @@ class AddNewBookUseCaseTest {
     void setUp() {
         bookRepository = mock(BookRepository.class);
         emailService = mock(EmailService.class);
-        sut = new AddNewBookUseCase(bookRepository, emailService);
+        sut = new AddNewBookInteractor(bookRepository, emailService);
     }
 
     @Test

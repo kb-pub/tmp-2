@@ -11,20 +11,20 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.stream.IntStream;
 
-class GetAllBooksUseCaseTest {
-    GetAllBooksUseCase sut;
+class GetAllBooksInteractorTest {
+    GetAllBooksInteractor sut;
     BookRepository bookRepository;
 
     @BeforeEach
     void setUp() {
         bookRepository = Mockito.mock(BookRepository.class);
-        sut = new GetAllBooksUseCase(bookRepository);
+        sut = new GetAllBooksInteractor(bookRepository);
     }
 
     @Test
     void givenNoBooks_whenGet_returnsEmptyResponse() {
         Mockito.when(bookRepository.findAll()).thenReturn(List.of());
-        var result = new GetAllBooksUseCase.Response(List.of());
+        var result = new GetAllBooksInteractor.Response(List.of());
 
         Assertions.assertThat(sut.get()).isEqualTo(result);
     }
@@ -34,7 +34,7 @@ class GetAllBooksUseCaseTest {
         var books = getBookList(3);
         Mockito.when(bookRepository.findAll())
                 .thenReturn(books);
-        var result = new GetAllBooksUseCase.Response(
+        var result = new GetAllBooksInteractor.Response(
                 books.stream()
                         .map(BookMapper::toDto)
                                 .toList());

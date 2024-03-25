@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class AddNewBookUseCase {
+public class AddNewBookInteractor {
     private final BookRepository bookRepository;
     private final EmailService emailService;
 

@@ -4,7 +4,11 @@ import library.lv1.entity.Book;
 
 public class BookMapper {
     public static BookDto toDto(Book book) {
-        return new BookDto(book.getId(), book.getTitle(), book.getYear());
+        return new BookDto(
+                book.getId(),
+                book.getTitle(),
+                book.getYear(),
+                book.getAuthors() == null ? null : book.getAuthors().stream().map(AuthorMapper::toDto).toList());
     }
 
     public static Book fromDtoToNewBook(BookDto dto) {
