@@ -71,16 +71,33 @@ public class Server {
             clientChannel = ssc.accept();
             if (clientChannel != null) {
                 clientChannel.configureBlocking(false);
-                clientChannel.register(selector, SelectionKey.OP_READ);
+                var clientKey = clientChannel.register(selector, SelectionKey.OP_READ);
+                clientKey.attach(new KeyAttachment());
             }
         } while (clientChannel != null);
     }
 
+
+    static class KeyAttachment {
+        boolean firstRead = true;
+        private ByteArrayOutputStream baos;
+        private int inputSize;
+    }
+
     private void read(SelectionKey key) throws IOException {
+        var attachment = (KeyAttachment) key.attachment();
+
+        if (attachment.firstRead) {
+            attachment.inputSize = -1; // ...
+            attachment.baos = new ByteArrayOutputStream();
+            attachment.firstRead = false;
+        }
+
         var channel = (SocketChannel) key.channel();
-        var buffer = ByteBuffer.allocate(16);
+        var buffer = ByteBuffer.allocate(200_480_000);
         channel.read(buffer);
         buffer.flip();
+
         var msg = (EchoRequest) new SerializableMessageCodec().decode(buffer);
         io.println("read: " + msg);
         key.attach(new EchoResponse("async echo: " + msg));
@@ -93,9 +110,12 @@ public class Server {
         var byteStream = new ByteArrayOutputStream();
         new SerializableMessageCodec().encode(msg, byteStream);
         var bytes = byteStream.toByteArray();
-        channel.write(ByteBuffer.wrap(bytes));
+        var buffer = ByteBuffer.wrap(bytes);
+        channel.write(buffer);
 
-        key.cancel();
-        channel.close();
+        if (!buffer.hasRemaining()) {
+            key.cancel();
+            channel.close();
+        }
     }
 }

@@ -24,7 +24,7 @@ public class Server {
     private final UserService userService = new UserService();
     private final SessionService sessionService = new SessionService();
     private final FileStorageService fileSystemService = new FileStorageService();
-    private ExecutorService pool = Executors.newCachedThreadPool();
+    private final ExecutorService pool = Executors.newCachedThreadPool();
 
     public static void main(String[] args) throws Exception {
         new Server().listenLoop();

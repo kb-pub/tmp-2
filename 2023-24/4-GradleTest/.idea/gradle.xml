@@ -8,7 +8,7 @@
         <option name="gradleHome" value="$USER_HOME$/.sdkman/candidates/gradle/current" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
+            <option value="/media/storage/YDisk/Универ/Предметы-private/ТМП 2/git/tmp-2/2023-24/4-GradleTest" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -2,7 +2,7 @@ package app.client.command;
 
 import app.IO;
 import app.Settings;
-import app.client.TokenHolder;
+import app.client.token.TokenHolder;
 import app.transport.Transport;
 import app.transport.message.storage.FileUploadRequest;
 import app.transport.message.storage.FileUploadResponse;

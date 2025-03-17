@@ -1,13 +1,10 @@
 package app.client.command;
 
 import app.IO;
-import app.client.TokenHolder;
+import app.client.token.TokenHolder;
 import app.transport.Transport;
-import app.transport.message.SuccessResponse;
 import app.transport.message.storage.FileListRequest;
 import app.transport.message.storage.FileListResponse;
-import app.transport.message.storage.RegisterPasswordRequest;
-import app.transport.message.storage.RegisterUsernameRequest;
 
 public class FileListCommand extends Command {
     private final TokenHolder tokenHolder;

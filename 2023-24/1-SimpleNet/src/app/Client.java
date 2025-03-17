@@ -8,8 +8,8 @@ import app.transport.echo.SerializedTransport;
 
 public class Client {
     private final IO io = new IO();
-//    private final Transport transport = new SerializedTransport();
-    private final Transport transport = new StringLineTransport();
+    private final Transport transport = new SerializedTransport();
+//    private final Transport transport = new StringLineTransport();
 
     public static void main(String[] args) {
         new Client().commandLoop();

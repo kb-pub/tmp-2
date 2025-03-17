@@ -2,13 +2,15 @@ package app.client;
 
 import app.IO;
 import app.client.command.*;
+import app.client.token.InMemoryTokenHolder;
+import app.client.token.TokenHolder;
 import app.transport.SerializedTransport;
 import app.transport.Transport;
 
 public class Client {
     private final IO io = new IO();
     private final Transport transport = new SerializedTransport();
-    private final TokenHolder tokenHolder = new TokenHolder();
+    private final TokenHolder tokenHolder = new InMemoryTokenHolder();
 
     public static void main(String[] args) {
         new Client().commandLoop();

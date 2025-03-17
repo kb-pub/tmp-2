@@ -2,7 +2,7 @@ package app.client.command;
 
 import app.IO;
 import app.Settings;
-import app.client.TokenHolder;
+import app.client.token.TokenHolder;
 import app.transport.Transport;
 import app.transport.message.storage.*;
 
@@ -34,6 +34,9 @@ public class FileDownloadCommand extends Command {
             transport.getInputStream().transferTo(tempOutputStream);
         }
 
-        new ProcessBuilder("/usr/bin/open", temp.toAbsolutePath().toString()).start();
+        var downloaded = Path.of(Settings.CLIENT_FILE_STORAGE_BASE_PATH, filename);
+        Files.move(temp, downloaded);
+
+        new ProcessBuilder("/usr/bin/open", downloaded.toAbsolutePath().toString()).start();
     }
 }
