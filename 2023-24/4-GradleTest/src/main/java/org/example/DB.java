@@ -79,4 +79,8 @@ public class DB {
             throw new DBException(e);
         }
     }
+
+    public Book update(Book book) {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -22,6 +22,7 @@ public class SerializedTransport implements Transport {
     public SerializedTransport(Socket socket) {
         try {
             this.socket = socket;
+            socket.setSoTimeout(5000);
             writer = new ObjectOutputStream(socket.getOutputStream());
             reader = new ObjectInputStream(socket.getInputStream());
             logger.debug(STR."transport joined to socket \{socket}");

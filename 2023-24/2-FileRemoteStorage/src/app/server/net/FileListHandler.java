@@ -1,7 +1,7 @@
 package app.server.net;
 
 import app.IO;
-import app.server.filestorage.FileStorageService;
+import app.server.filestorage.FileSystemService;
 import app.server.session.Session;
 import app.server.session.SessionService;
 import app.server.session.Token;
@@ -11,10 +11,10 @@ import app.transport.message.storage.FileListRequest;
 import app.transport.message.storage.FileListResponse;
 
 public class FileListHandler extends Handler {
-    private final FileStorageService fileSystemService;
+    private final FileSystemService fileSystemService;
     private final SessionService sessionService;
 
-    public FileListHandler(Transport transport, IO io, FileStorageService fileSystemService, SessionService sessionService) {
+    public FileListHandler(Transport transport, IO io, FileSystemService fileSystemService, SessionService sessionService) {
         super(transport, io);
         this.fileSystemService = fileSystemService;
         this.sessionService = sessionService;

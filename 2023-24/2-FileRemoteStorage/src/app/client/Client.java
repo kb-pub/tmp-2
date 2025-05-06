@@ -31,6 +31,7 @@ public class Client {
                     case "file list" -> new FileListCommand(transport, io, tokenHolder);
                     case "file up" -> new FileUploadCommand(transport, io, tokenHolder);
                     case "file down" -> new FileDownloadCommand(transport, io, tokenHolder);
+                    case "file delete" -> new FileDeleteCommand(transport, io, tokenHolder);
                     default -> new PrintCommand(transport, io, "unrecognized command");
                 }).perform();
             } catch (Exception e) {

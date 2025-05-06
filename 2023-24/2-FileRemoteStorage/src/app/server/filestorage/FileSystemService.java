@@ -10,11 +10,13 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class FileStorageService {
+public class FileSystemService {
     private final Pattern usernameRegex = Pattern.compile("^\\w+$");
+
     public boolean isUsernameValid(String username) {
         return usernameRegex.matcher(username).matches();
     }
+
     public List<String> listUserFiles(String username) {
         var userFilePath = getUserDirectory(username);
         if (Files.notExists(userFilePath)) {
@@ -34,6 +36,15 @@ public class FileStorageService {
     public boolean fileExists(String username, String filename) {
         return Files.exists(getUserFilePath(username, filename));
     }
+
+    public void delete(String username, String filename) {
+        try {
+            Files.delete(getUserFilePath(username, filename));
+        } catch (IOException e) {
+            throw new FileStorageException(e);
+        }
+    }
+
     public long size(String username, String filename) {
         try {
             return Files.size(getUserFilePath(username, filename));
@@ -41,6 +52,7 @@ public class FileStorageService {
             throw new FileStorageException(e);
         }
     }
+
     public InputStream getFileInputStream(String username, String filename) {
         var path = getUserFilePath(username, filename);
         if (Files.exists(path) && !Files.isRegularFile(path)) {
@@ -52,6 +64,7 @@ public class FileStorageService {
             throw new FileStorageException(e);
         }
     }
+
     public OutputStream getFileOutputStream(String username, String filename) {
         var path = getUserFilePath(username, filename);
         if (Files.exists(path) && !Files.isRegularFile(path)) {

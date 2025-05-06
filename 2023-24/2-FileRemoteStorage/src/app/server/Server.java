@@ -2,7 +2,7 @@ package app.server;
 
 import app.IO;
 import app.Settings;
-import app.server.filestorage.FileStorageService;
+import app.server.filestorage.FileSystemService;
 import app.server.net.*;
 import app.server.session.SessionService;
 import app.server.session.Token;
@@ -12,10 +12,12 @@ import app.transport.Transport;
 import app.transport.message.AuthorizedMessage;
 import app.transport.message.ErrorResponse;
 import app.transport.message.Message;
+import app.transport.message.SuccessResponse;
 import app.transport.message.storage.*;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,7 +25,7 @@ public class Server {
     private final IO io = new IO();
     private final UserService userService = new UserService();
     private final SessionService sessionService = new SessionService();
-    private final FileStorageService fileSystemService = new FileStorageService();
+    private final FileSystemService fileSystemService = new FileSystemService();
     private final ExecutorService pool = Executors.newCachedThreadPool();
 
     public static void main(String[] args) throws Exception {
@@ -74,6 +76,10 @@ public class Server {
     }
 
     private void routeToHandler(Transport transport, Message request) {
+        if (request instanceof Ping) {
+            transport.send(new Pong());
+        }
+
         (switch (request) {
             case RegisterUsernameRequest req -> new RegisterHandler(transport, io, userService, fileSystemService);
             case LoginRequest req -> new LoginHandler(transport, io, userService, sessionService);
@@ -81,6 +87,7 @@ public class Server {
             case FileListRequest req -> new FileListHandler(transport, io, fileSystemService, sessionService);
             case FileUploadRequest req -> new FileUploadHandler(transport, io, fileSystemService, sessionService);
             case FileDownloadRequest req -> new FileDownloadHandler(transport, io, fileSystemService, sessionService);
+            case FileDeleteRequest req -> new FileDeleteHandler(transport, io, fileSystemService, sessionService);
             default -> new UnimplementedHandler(transport, io);
         }).handle(request);
     }

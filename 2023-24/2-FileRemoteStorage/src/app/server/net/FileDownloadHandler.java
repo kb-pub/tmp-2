@@ -2,7 +2,7 @@ package app.server.net;
 
 import app.IO;
 import app.server.ServerException;
-import app.server.filestorage.FileStorageService;
+import app.server.filestorage.FileSystemService;
 import app.server.session.Session;
 import app.server.session.SessionService;
 import app.server.session.Token;
@@ -11,12 +11,12 @@ import app.transport.message.Message;
 import app.transport.message.storage.*;
 
 public class FileDownloadHandler extends Handler {
-    private final FileStorageService fileSystemService;
+    private final FileSystemService fileSystemService;
     private final SessionService sessionService;
 
-    public FileDownloadHandler(Transport transport, IO io, FileStorageService fileStorageService, SessionService sessionService) {
+    public FileDownloadHandler(Transport transport, IO io, FileSystemService fileSystemService, SessionService sessionService) {
         super(transport, io);
-        this.fileSystemService = fileStorageService;
+        this.fileSystemService = fileSystemService;
         this.sessionService = sessionService;
     }
 

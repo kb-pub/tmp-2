@@ -2,7 +2,7 @@ package app.server.net;
 
 import app.IO;
 import app.server.ServerException;
-import app.server.filestorage.FileStorageService;
+import app.server.filestorage.FileSystemService;
 import app.server.user.UserService;
 import app.transport.Transport;
 import app.transport.message.Message;
@@ -12,9 +12,9 @@ import app.transport.message.storage.RegisterUsernameRequest;
 
 public class RegisterHandler extends Handler {
     private final UserService userService;
-    private final FileStorageService fileSystemService;
+    private final FileSystemService fileSystemService;
 
-    public RegisterHandler(Transport transport, IO io, UserService userService, FileStorageService fileSystemService) {
+    public RegisterHandler(Transport transport, IO io, UserService userService, FileSystemService fileSystemService) {
         super(transport, io);
         this.userService = userService;
         this.fileSystemService = fileSystemService;

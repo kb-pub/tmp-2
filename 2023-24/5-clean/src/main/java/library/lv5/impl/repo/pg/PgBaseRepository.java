@@ -4,6 +4,7 @@ import library.lv2.spi.repo.BaseRepository;
 import library.lv2.spi.repo.RepositoryAppException;
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 
 @RequiredArgsConstructor
