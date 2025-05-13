@@ -1,10 +1,7 @@
 package kb.tmp2.orm.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
 import java.util.Set;
@@ -13,6 +10,7 @@ import java.util.Set;
 @Table(name = "books")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @NamedEntityGraph(
         name = "book_with_authors_awards",
         attributeNodes = {

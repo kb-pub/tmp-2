@@ -11,6 +11,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Db {
     private static final SessionFactory sessionFactory;
@@ -37,5 +38,9 @@ public class Db {
 
     public static void inTransaction(Consumer<Session> action) {
         sessionFactory.inTransaction(action);
+    }
+
+    public static <T> T fromTransaction(Function<Session, T> action) {
+        return sessionFactory.fromTransaction(action);
     }
 }
