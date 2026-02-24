@@ -7,6 +7,8 @@ import app.client.token.TokenHolder;
 import app.transport.SerializedTransport;
 import app.transport.Transport;
 
+import static java.lang.StringTemplate.STR;
+
 public class Client {
     private final IO io = new IO();
     private final Transport transport = new SerializedTransport();
